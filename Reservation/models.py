@@ -10,4 +10,4 @@ class Reservation(models.Model):
     status = models.CharField(max_length=20, choices=[('confirmed', 'Confirmed'), ('cancelled', 'Cancelled')], default='confirmed')
 
     def __str__(self):
-        return f"Reservation for {self.guest.name} in {self.room.room_type}"
+        return f"{self.user.username} - {self.room.room_number}"

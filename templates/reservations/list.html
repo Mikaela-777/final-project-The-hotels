@@ -4,16 +4,19 @@
     <title>Reservation List</title>
 </head>
 <body>
-    <h1>Reservation List</h1>
-    <a href="{% url 'create_reservation' %}">Add New Reservation</a>
+    <h1>Daftar Reservasi Anda</h1>
     <ul>
         {% for reservation in reservations %}
             <li>
-                {{ reservation.guest.name }} - {{ reservation.room.room_type }} 
-                ({{ reservation.check_in_date }} to {{ reservation.check_out_date }})
-                <a href="{% url 'delete_reservation' reservation.pk %}">Delete</a>
+                Kamar: {{ reservation.room.room_number }} - {{ reservation.room.room_type }}<br>
+                Tanggal Check-In: {{ reservation.check_in_date }}<br>
+                Tanggal Check-Out: {{ reservation.check_out_date }}<br>
+                Status: {{ reservation.status }}
             </li>
+        {% empty %}
+            <li>Belum ada reservasi.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'create_reservation' %}">Buat Reservasi Baru</a>
 </body>
 </html>

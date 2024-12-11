@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Room</title>
-</head>
-<body>
-    <h1>Edit Room: {{ room.room_type }}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save Changes</button>
-        <a href="{% url 'room_list' %}">Cancel</a>
-    </form>
-</body>
-</html>
+<h1>Edit Room: {{ room.room_number }}</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+</form>
+<a href="{% url 'room_list' %}" class="btn btn-secondary">Kembali</a>

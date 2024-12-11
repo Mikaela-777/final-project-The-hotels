@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Reservation</title>
+    <title>Buat Reservasi Baru</title>
 </head>
 <body>
-    <h1>Create Reservation</h1>
+    <h1><b>Buat Reservasi Baru</b></h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save</button>
-        <a href="{% url 'reservation_list' %}">Cancel</a>
+        <button type="submit">Buat Reservasi</button>
+        <a href="{% url 'reservation_list' %}">Kembali</a>
     </form>
 </body>
 </html>

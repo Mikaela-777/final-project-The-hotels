@@ -1,19 +1,149 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Room List</title>
+    <title>Room Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #2a2a2a;
+            background-image: url("{% static 'images/hotel2.jpg' %}");
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .room-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .room-card {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 10px;
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+        }
+
+        .room-card img {
+    width: 100%; /* Lebar gambar mengikuti lebar container */
+    height: 200px; /* Tinggi gambar seragam */
+    object-fit: cover; /* Memastikan gambar terpotong rapi untuk mengisi area */
+    border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: azure;
+        }
+
+        h2 {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+
+        p {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    width: 100px; /* Lebar tombol seragam */
+    align-self: center; /* Posisikan tombol di tengah */
+}
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .description {
+    margin-top: 15px;
+    color: #333;
+    font-size: 0.9rem;
+    display: none; /* Awalnya tersembunyi */
+    text-align: left; /* Meratakan teks deskripsi ke kiri */
+}
+    </style>
+    <script>
+        function toggleDescription(id) {
+            const description = document.getElementById(id);
+            if (description.style.display === "none" || description.style.display === "") {
+                description.style.display = "block";
+            } else {
+                description.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
-    <h1>Room List</h1>
-    <a href="{% url 'create_room' %}">Add New Room</a>
-    <ul>
-        {% for room in rooms %}
-            <li>
-                {{ room.room_type }} - ${{ room.price_per_night }}
-                <a href="{% url 'edit_room' room.pk %}">Edit</a>
-                <a href="{% url 'delete_room' room.pk %}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <h1>Room Availability Summary</h1>
+        <div style="text-align: center; margin-bottom: 20px;">
+            {% if user.is_staff %}
+                <a href="{% url 'create_room' %}" style="display: inline-block; color: #fff; background-color: #007bff; padding: 10px 15px; text-decoration: none; border-radius: 5px;">Add New Room</a>
+                <a href="{% url 'setting_room' %}" style="display: inline-block; color: #fff; background-color: #007bff; padding: 10px 15px; text-decoration: none; border-radius: 5px;">Room Setting</a>
+            {% endif %}
+        </div>
+        <div class="room-container">
+            <!-- Single Room Card -->
+            <div class="room-card">
+                <img src="{% static 'images/single.jpg' %}" alt="Single Room">
+                <h2>Single Room</h2>
+                <p>Tersedia: {{ single_rooms_count }}</p>
+                <p>Harga per malam: ${{ single_room_price }}</p>
+                <button class="btn" onclick="toggleDescription('single-room-desc')">Deskripsi</button>
+                <div id="single-room-desc" class="description">
+                    Single Room: Kamar nyaman untuk satu orang dengan fasilitas modern dan tempat tidur tunggal.
+                </div>
+                <a href="{% url 'create_reservation' %}" class="btn">Pesan</a>
+            </div>
+
+            <!-- Double Room Card -->
+            <div class="room-card">
+                <img src="{% static 'images/double.jpg' %}" alt="Double Room">
+                <h2>Double Room</h2>
+                <p>Tersedia: {{ double_rooms_count }}</p>
+                <p>Harga per malam: ${{ double_room_price }}</p>
+                <button class="btn" onclick="toggleDescription('double-room-desc')">Deskripsi</button>
+                <div id="double-room-desc" class="description">
+                    Double Room: Ideal untuk dua orang dengan tempat tidur ganda dan ruang yang lebih luas.
+                </div>
+                <a href="{% url 'create_reservation' %}" class="btn">Pesan</a>
+            </div>
+
+            <!-- Suite Room Card -->
+            <div class="room-card">
+                <img src="{% static 'images/suite.jpg' %}" alt="Suite Room">
+                <h2>Suite Room</h2>
+                <p>Tersedia: {{ suite_rooms_count }}</p>
+                <p>Harga per malam: ${{ suite_room_price }}</p>
+                <button class="btn" onclick="toggleDescription('suite-room-desc')">Deskripsi</button>
+                <div id="suite-room-desc" class="description">
+                    Suite Room: Pilihan mewah dengan ruang tamu terpisah, fasilitas premium, dan pemandangan luar biasa.
+                </div>
+                <a href="{% url 'create_reservation' %}" class="btn">Pesan</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

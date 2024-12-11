@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Setting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .room-list {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .room-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .room-item:last-child {
+            border-bottom: none;
+        }
+
+        .room-details {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .room-number {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-left: 5px;
+            color: #fff;
+            background-color: #007bff;
+            transition: background-color 0.3s;
+        }
+
+        .action-buttons a:hover {
+            background-color: #0056b3;
+        }
+
+        .action-buttons a.delete {
+            background-color: #e74c3c;
+        }
+
+        .action-buttons a.delete:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Room List</h1>
+    <div class="room-list">
+        {% for room in rooms %}
+            <div class="room-item">
+                <div class="room-details">
+                    <strong>{{ room.room_type }}</strong> - ${{ room.price_per_night }}
+                    <div class="room-number">Room Number: {{ room.room_number }}</div>
+                </div>
+                <div class="action-buttons">
+                    <a href="{% url 'edit_room' room.pk %}">Edit</a>
+                    <a href="{% url 'delete_room' room.pk %}" class="delete">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
