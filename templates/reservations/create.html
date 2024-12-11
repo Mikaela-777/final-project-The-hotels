@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Reservation</title>
+</head>
+<body>
+    <h1>Create Reservation</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+        <a href="{% url 'reservation_list' %}">Cancel</a>
+    </form>
+</body>
+</html>

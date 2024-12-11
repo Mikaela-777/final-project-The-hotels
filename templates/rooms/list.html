@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room List</title>
+</head>
+<body>
+    <h1>Room List</h1>
+    <a href="{% url 'create_room' %}">Add New Room</a>
+    <ul>
+        {% for room in rooms %}
+            <li>
+                {{ room.room_type }} - ${{ room.price_per_night }}
+                <a href="{% url 'edit_room' room.pk %}">Edit</a>
+                <a href="{% url 'delete_room' room.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

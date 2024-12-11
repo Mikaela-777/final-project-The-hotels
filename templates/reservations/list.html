@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reservation List</title>
+</head>
+<body>
+    <h1>Reservation List</h1>
+    <a href="{% url 'create_reservation' %}">Add New Reservation</a>
+    <ul>
+        {% for reservation in reservations %}
+            <li>
+                {{ reservation.guest.name }} - {{ reservation.room.room_type }} 
+                ({{ reservation.check_in_date }} to {{ reservation.check_out_date }})
+                <a href="{% url 'delete_reservation' reservation.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

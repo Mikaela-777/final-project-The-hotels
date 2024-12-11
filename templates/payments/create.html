@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Payment</title>
+</head>
+<body>
+    <h1>Create Payment</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Payment</button>
+        <a href="{% url 'payment_list' %}">Cancel</a>
+    </form>
+</body>
+</html>
