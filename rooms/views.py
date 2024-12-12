@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
 from .models import Room
 from .forms import RoomForm
+from django.db.models import Count, Q
+from django.utils import timezone
 
 # Create
 def create_room(request):
@@ -39,24 +40,37 @@ def delete_room(request, pk):
     return render(request, 'rooms/delete.html', {'room': room})
 
 def room_list(request):
-    # Hitung jumlah ruangan untuk setiap tipe dan ambil harga yang relevan
-    single_rooms = Room.objects.filter(room_type='Single', status=True)
-    double_rooms = Room.objects.filter(room_type='Double', status=True)
-    suite_rooms = Room.objects.filter(room_type='Suite', status=True)
+    today = timezone.now().date()  # Get today's date
 
-    # Mengambil harga unik dari masing-masing tipe ruangan
-    single_room_price = single_rooms.first().price_per_night if single_rooms.exists() else 0
-    double_room_price = double_rooms.first().price_per_night if double_rooms.exists() else 0
-    suite_room_price = suite_rooms.first().price_per_night if suite_rooms.exists() else 0
+    # Count available rooms by excluding rooms with overlapping bookings for today
+    single_rooms = Room.objects.filter(room_type='Single').annotate(
+        booked_count=Count('reservation', filter=Q(reservation__status='booked') &
+                                             Q(reservation__check_in__lte=today) &
+                                             Q(reservation__check_out__gte=today))
+    )
 
+    double_rooms = Room.objects.filter(room_type='Double').annotate(
+        booked_count=Count('reservation', filter=Q(reservation__status='booked') &
+                                             Q(reservation__check_in__lte=today) &
+                                             Q(reservation__check_out__gte=today))
+    )
+
+    suite_rooms = Room.objects.filter(room_type='Suite').annotate(
+        booked_count=Count('reservation', filter=Q(reservation__status='booked') &
+                                             Q(reservation__check_in__lte=today) &
+                                             Q(reservation__check_out__gte=today))
+    )
+
+    # Calculate the number of available rooms (total rooms - booked rooms for today)
     context = {
-        'single_rooms_count': single_rooms.count(),
-        'double_rooms_count': double_rooms.count(),
-        'suite_rooms_count': suite_rooms.count(),
-        'single_room_price': single_room_price,
-        'double_room_price': double_room_price,
-        'suite_room_price': suite_room_price,
+        'single_rooms_count': single_rooms.count() - single_rooms.filter(booked_count__gt=0).count(),
+        'double_rooms_count': double_rooms.count() - double_rooms.filter(booked_count__gt=0).count(),
+        'suite_rooms_count': suite_rooms.count() - suite_rooms.filter(booked_count__gt=0).count(),
+        'single_room_price': single_rooms.first().price_per_night if single_rooms.exists() else 0,
+        'double_room_price': double_rooms.first().price_per_night if double_rooms.exists() else 0,
+        'suite_room_price': suite_rooms.first().price_per_night if suite_rooms.exists() else 0,
     }
+
     return render(request, 'rooms/list.html', context)
 
 def pesan_kamar(request, room_type):

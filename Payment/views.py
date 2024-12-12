@@ -1,18 +1,39 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Payment, Reservation
 from .forms import PaymentForm
+from .models import Payment
+from Reservation.models import Reservation
+from django.contrib import messages
 
-# Create Payment
-def create_payment(request):
-    if request.method == "POST":
+def create_payment(request, reservation_id):
+    reservation = Reservation.objects.get(id=reservation_id)
+
+    # Jika metode request adalah POST, proses pembayaran
+    if request.method == 'POST':
         form = PaymentForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('payment_list')
+            # Tentukan jumlah pembayaran sesuai harga kamar
+            payment = form.save(commit=False)
+            payment.reservation = reservation
+            payment.amount = reservation.room.price_per_night  # Set jumlah pembayaran sesuai harga kamar
+            payment.status = 'completed'  # Status pembayaran di-set ke 'completed'
+            payment.save()
+
+            # Setelah pembayaran selesai, baru ubah status reservasi menjadi 'completed' dan 'payed'
+            reservation.payment_status = 'payed'
+            reservation.status = 'completed'
+            reservation.save()
+
+            messages.success(request, 'Pembayaran berhasil.')
+            return redirect('payment_list')  # Arahkan ke daftar pembayaran setelah berhasil
     else:
         form = PaymentForm()
-    reservations = Reservation.objects.all()  # Untuk dropdown reservasi
-    return render(request, 'payments/create.html', {'form': form, 'reservations': reservations})
+
+    context = {
+        'form': form,
+        'reservation': reservation
+    }
+
+    return render(request, 'payments/create.html', context)
 
 # Delete Payment
 def delete_payment(request, pk):

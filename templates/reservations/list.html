@@ -2,21 +2,39 @@
 <html>
 <head>
     <title>Reservation List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Daftar Reservasi Anda</h1>
-    <ul>
-        {% for reservation in reservations %}
-            <li>
-                Kamar: {{ reservation.room.room_number }} - {{ reservation.room.room_type }}<br>
-                Tanggal Check-In: {{ reservation.check_in_date }}<br>
-                Tanggal Check-Out: {{ reservation.check_out_date }}<br>
-                Status: {{ reservation.status }}
-            </li>
-        {% empty %}
-            <li>Belum ada reservasi.</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'create_reservation' %}">Buat Reservasi Baru</a>
+    <div class="container">
+        <h1 class="my-4">Daftar Reservasi Anda</h1>
+        
+        <ul class="list-group">
+            {% for reservation in reservations %}
+                <li class="list-group-item mb-3">
+                    <h5>Kamar: {{ reservation.room.room_number }} - {{ reservation.room.room_type }}</h5>
+                    <p><strong>Tanggal Check-In:</strong> {{ reservation.check_in }}</p>
+                    <p><strong>Tanggal Check-Out:</strong> {{ reservation.check_out }}</p>
+                    <p><strong>Status:</strong> {{ reservation.status }}</p>
+                    <p><strong>Harga per Malam:</strong> ${{ reservation.room.price_per_night }}</p>
+                    <p><strong>Status Pembayaran:</strong> {{ reservation.payment_status }}</p>
+                    {% if reservation.status == 'booked' %}
+                    <a href="{% url 'create_payment' reservation.id %}" class="btn btn-success btn-block">
+                        Buat Pembayaran
+                    </a>
+                {% endif %}
+                </li>
+            {% empty %}
+                <li class="list-group-item">Belum ada reservasi.</li>
+            {% endfor %}
+        </ul>
+
+        <a href="{% url 'create_reservation' %}" class="btn btn-primary mt-4">Buat Reservasi Baru</a>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
