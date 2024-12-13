@@ -22,6 +22,10 @@
                     <a href="{% url 'create_payment' reservation.id %}" class="btn btn-success btn-block">
                         Buat Pembayaran
                     </a>
+                    <form method="post" action="{% url 'cancel_reservation' reservation.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-block">Batalkan Reservasi</button>
+                    </form>
                 {% endif %}
                 </li>
             {% empty %}
@@ -29,7 +33,11 @@
             {% endfor %}
         </ul>
 
-        <a href="{% url 'create_reservation' %}" class="btn btn-primary mt-4">Buat Reservasi Baru</a>
+        <a href="{% url 'create_reservation' %}" class="btn btn-primary mt-4">Buat Reservasi Baru</a>        
+        <a href="{% url 'room_list' %}" class="btn btn-primary mt-4">Kembali Ke Daftar Kamar</a>
+        {% if user.is_staff %}
+        <a href="{% url 'reservation_list_hotel' %}" class="btn btn-primary mt-4">Reservasi List</a>
+        {% endif %}
     </div>
 
     <!-- Bootstrap JS and dependencies -->

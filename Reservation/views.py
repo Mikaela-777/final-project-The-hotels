@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Reservation
-from .forms import ReservationForm, ReservationListForm
+from .forms import ReservationForm, ReservationListForm, CancelReservationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -18,10 +18,10 @@ def create_reservation(request):
             messages.success(request, 'Reservasi berhasil dibuat!')
             return redirect('reservation_list')
         else:
-            messages.error(request, 'Terjadi kesalahan dalam pembuatan reservasi.')
+            messages.error(request, 'Ruang ini sudah dipesan pada tanggal ini.')
     else:
         form = ReservationForm()
-
+    
     return render(request, 'reservations/create.html', {'form': form})
 
 @login_required
@@ -37,15 +37,19 @@ def delete_reservation(request, pk):
         return redirect('reservation_list')
     return render(request, 'reservations/delete.html', {'reservation': reservation})
 
-def confirm_payment(request, reservation_id):
-    reservation = get_object_or_404(Reservation, id=reservation_id)
-    reservation.confirm_reservation()
-    return redirect('reservation_detail', reservation_id=reservation.id)
+def cancel_reservation(request, pk):
+    reservation = get_object_or_404(Reservation, pk=pk)
 
-def cancel_reservation(request, reservation_id):
-    reservation = get_object_or_404(Reservation, id=reservation_id)
-    reservation.cancel_reservation()
-    return redirect('reservation_detail', reservation_id=reservation.id)
+    if request.method == 'POST':
+        reservation.status = 'cancelled'
+        reservation.payment_status = 'canceled'
+        reservation.save()
+        messages.success(request, 'Reservasi berhasil dibatalkan.')
+        return redirect('reservation_list')  # Redirect ke daftar reservasi
+
+    # Jika tidak memerlukan konfirmasi, bisa langsung handle POST di daftar reservasi
+    return redirect('reservation_list')
+
 
 @login_required
 def reservation_list_hotel(request):

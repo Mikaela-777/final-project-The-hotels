@@ -9,20 +9,20 @@ class Payment(models.Model):
     payment_method = models.CharField(
         max_length=50,
         choices=[
-            ('credit_card', 'Credit Card'),
             ('cash', 'Cash'),
+            ('credit_card', 'Credit Card'),
             ('bank_transfer', 'Bank Transfer'),
-            ('e_wallet', 'E-Wallet'),
+            ('QRIS', 'QRIS'),
+            ('Dana', 'Dana'),
         ]
     )
     status = models.CharField(
         max_length=20,
         choices=[
-            ('pending', 'Pending'),
             ('completed', 'Completed'),
-            ('failed', 'Failed'),
             ('refunded', 'Refunded'),
         ]
+        ,default='completed'
     )
     transaction_id = models.CharField(max_length=100, blank=True, null=True)
     proof_of_payment = models.ImageField(upload_to='payment_proofs/', blank=True, null=True)

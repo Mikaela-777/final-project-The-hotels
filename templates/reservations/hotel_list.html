@@ -1,7 +1,7 @@
 {% block content %}
-<h1>Hotel Reservation List</h1>
+<h1 class="text-center">Hotel Reservation List</h1>
 
-<form method="get">
+<form method="get" class="filter-form">
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary">Filter</button>
 </form>
@@ -14,8 +14,7 @@
             <th>Check-In Date</th>
             <th>Check-Out Date</th>
             <th>Status</th>
-            <th>payment status</th>
-
+            <th>Payment Status</th>
         </tr>
     </thead>
     <tbody>
@@ -27,13 +26,97 @@
             <td>{{ reservation.check_out }}</td>
             <td>{{ reservation.status }}</td>
             <td>{{ reservation.payment_status }}</td>
-
         </tr>
         {% empty %}
         <tr>
-            <td colspan="5">No reservations found.</td>
+            <td colspan="6" class="text-center">No reservations found.</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 {% endblock %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7fa;
+        margin: 0;
+        padding: 0;
+    }
+    
+    h1 {
+        color: #333;
+        margin-top: 20px;
+        font-size: 2rem;
+    }
+
+    .filter-form {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .filter-form button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+
+    .filter-form button:hover {
+        background-color: #0056b3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+        background-color: #fff;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:hover {
+        background-color: #e9ecef;
+    }
+
+    .table td, .table th {
+        text-align: center;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>

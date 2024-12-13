@@ -1,9 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .forms import PaymentForm
 from .models import Payment
 from Reservation.models import Reservation
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
+
+@login_required
 def create_payment(request, reservation_id):
     reservation = Reservation.objects.get(id=reservation_id)
 
@@ -35,15 +38,8 @@ def create_payment(request, reservation_id):
 
     return render(request, 'payments/create.html', context)
 
-# Delete Payment
-def delete_payment(request, pk):
-    payment = get_object_or_404(Payment, pk=pk)
-    if request.method == "POST":
-        payment.delete()
-        return redirect('payment_list')
-    return render(request, 'payments/delete.html', {'payment': payment})
-
 # Payment List
+@login_required
 def payment_list(request):
-    payments = Payment.objects.all()
+    payments = Payment.objects.filter(reservation__user=request.user)
     return render(request, 'payments/list.html', {'payments': payments})

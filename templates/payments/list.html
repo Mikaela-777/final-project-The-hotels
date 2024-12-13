@@ -3,6 +3,62 @@
 <head>
     <title>Payment List</title>
 </head>
+<style>
+    /* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #d4edda;
+}
+
+/* Link Styles (if needed in the future) */
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+</style>
 <body>
     <h1>Riwayat Pembayaran</h1>
     <table border="1">
@@ -14,7 +70,6 @@
                 <th>Payment Date</th>
                 <th>Method</th>
                 <th>Status</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,10 +80,7 @@
                 <td>${{ payment.amount }}</td>
                 <td>{{ payment.payment_date }}</td>
                 <td>{{ payment.get_payment_method_display }}</td>
-                <td>{{ payment.get_status_display }}</td>
-                <td>
-                    <a href="{% url 'delete_payment' payment.pk %}">Delete</a>
-                </td>
+                <td>{{ payment.get_status_display }}</td>          
             </tr>
             {% endfor %}
         </tbody>

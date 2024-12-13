@@ -78,5 +78,5 @@ def pesan_kamar(request, room_type):
     return render(request, 'reservations/create.html', {'room_type': room_type})
 
 def room_setting(request):
-    rooms = Room.objects.all()
+    rooms = Room.objects.all().order_by('room_number')
     return render(request, 'rooms/room_setting.html', {'rooms': rooms})

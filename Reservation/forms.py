@@ -1,12 +1,17 @@
 from django import forms
-from .models import Reservation
+from .models import Reservation, Room
 from django.core.exceptions import ValidationError
 from django.forms.widgets import DateInput
 
 class ReservationForm(forms.ModelForm):
+    room = forms.ModelChoiceField(
+        queryset=Room.objects.all().order_by('price_per_night', 'room_number'),
+        empty_label="Select a room"
+    )
+
     class Meta:
         model = Reservation
-        fields = ['room', 'check_in', 'check_out', 'payment_status']
+        fields = ['room', 'check_in', 'check_out','payment_status']
         widgets = {
             'check_in': DateInput(attrs={'type': 'date'}),  # Menambahkan widget langsung di Meta
             'check_out': DateInput(attrs={'type': 'date'})  # Menambahkan widget langsung di Meta
@@ -41,7 +46,20 @@ class ReservationListForm(forms.Form):
     room = forms.CharField(required=False, label="Room", widget=forms.TextInput(attrs={'class': 'form-control'}))
     status = forms.ChoiceField(
         required=False,
-        choices=[('', 'All'), ('pending', 'Pending'), ('confirmed', 'Confirmed'), ('cancelled', 'Cancelled')],
+        choices=[('', 'All'), ('booked', 'booked'), ('cancelled', 'cancelled'), ('completed', 'completed')],
         label="Status",
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+
+class CancelReservationForm(forms.ModelForm):
+    class Meta:
+        model = Reservation
+        fields = []  # Tidak ada input karena pembatalan otomatis mengatur status
+
+    def save(self, commit=True):
+        reservation = super().save(commit=False)
+        reservation.status = 'cancelled'  # Ubah status menjadi 'cancelled'
+        reservation.payment_status = 'canceled'  # Ubah payment_status menjadi 'canceled'
+        if commit:
+            reservation.save()
+        return reservation
