@@ -5,10 +5,44 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<style>
+    .toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1055; /* Pastikan di atas elemen lain */
+        }
+</style>
+
+<!-- Toast Container -->
+<div class="toast-container">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="toast show align-items-center text-bg-info border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
 <body>
     <div class="container">
-        <h1 class="my-4">Daftar Reservasi Anda</h1>
+        <h1 class="my-4" style="text-align: center;">Daftar Reservasi Anda</h1>
+
+        <div class="d-flex justify-content-center mt-4" style="margin-bottom: 15px;">
+            <a href="{% url 'room_list' %}" class="btn btn-primary" style="margin-right: 15px;">Kembali Ke Daftar Kamar</a>
+            <a href="{% url 'create_reservation' %}" class="btn btn-primary" style="margin-right: 15px;">Buat Reservasi Baru</a>
+            {% if user.is_staff %}
+            <a href="{% url 'reservation_list_hotel' %}" class="btn btn-primary">Reservasi List</a>
+            {% endif %}
+        </div>
         
+
+
         <ul class="list-group">
             {% for reservation in reservations %}
                 <li class="list-group-item mb-3">
@@ -32,17 +66,25 @@
                 <li class="list-group-item">Belum ada reservasi.</li>
             {% endfor %}
         </ul>
-
-        <a href="{% url 'create_reservation' %}" class="btn btn-primary mt-4">Buat Reservasi Baru</a>        
-        <a href="{% url 'room_list' %}" class="btn btn-primary mt-4">Kembali Ke Daftar Kamar</a>
-        {% if user.is_staff %}
-        <a href="{% url 'reservation_list_hotel' %}" class="btn btn-primary mt-4">Reservasi List</a>
-        {% endif %}
     </div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (document.querySelector('.toast-container')) {
+                setTimeout(function() {
+                    let toasts = document.querySelectorAll('.toast');
+                    toasts.forEach(function(toast) {
+                        let toastElement = new bootstrap.Toast(toast);
+                        toastElement.hide();
+                    });
+                }, 2000);
+            }
+        });
+    </script>
 </body>
 </html>

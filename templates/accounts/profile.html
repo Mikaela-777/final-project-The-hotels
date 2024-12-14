@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,9 +165,8 @@
     <div class="profile-card">
         <!-- Left section -->
         <div class="left-section">
-            <img src="https://via.placeholder.com/100" alt="Profile Picture">
+            <img src="{% static 'images/images.png' %}" alt="Profile Picture">
             <h2>{{ user.username }}</h2>
-            <a1>Web Developer</a1>
             <div class="footer">
                 <a href="{% url 'edit_profile' %}" class="edit-profile-btn">Edit Profile</a>
                 <a href="{% url 'update_profile' %}" class="edit-profile-btn">Change password</a>
@@ -183,12 +183,6 @@
                 <li><span>Email:</span> {{ user.email }}</li>
                 <li><span>Address:</span> {{ profile.address }}</li>
             </ul>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-github"></i></a>
-            </div>
         </div>
     </div>
 </body>

@@ -43,3 +43,8 @@ def create_payment(request, reservation_id):
 def payment_list(request):
     payments = Payment.objects.filter(reservation__user=request.user)
     return render(request, 'payments/list.html', {'payments': payments})
+
+@login_required
+def payment_list_all(request):
+    payments = Payment.objects.all().order_by('transaction_id')
+    return render(request, 'payments/all_list.html', {'payments': payments})

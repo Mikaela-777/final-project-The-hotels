@@ -380,7 +380,7 @@ color: #888;
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#aboutme">About Us</a>
+                        <a class="nav-link" href="#aboutme">About Me</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'room_list' %}">Our Rooms</a>
@@ -413,6 +413,25 @@ color: #888;
             </div>
         </div>
     </header>
+
+   <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                {{ message }}
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+
     
     <!-- Hero Section -->
     <div class="hero">
@@ -423,42 +442,47 @@ color: #888;
     </div>
 
     <!-- Login Modal -->
-    <div class="modal fade {% if messages %}show{% endif %}" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" 
-     {% if messages %}style="display: block;"{% endif %} data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
-            </div>
-            <div class="modal-body">
-                {% for message in messages %}
-                    <div class="alert alert-secondary" id="messages">{{ message }}</div>
-                {% endfor %}
-                <form method="post" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% if messages %}
+                        <div id="messages">
+                            {% for message in messages %}
+                                {% if 'login_error' in message.tags %}
+                                    <div class="alert alert-danger">{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="password" name="password" required>
                                 <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                                <i class="bi bi-eye"></i>
-                            </button>
+                                    <i class="bi bi-eye"></i>
+                                </button>
                             </div>
                             <small id="passwordHelp" class="form-text text-muted">
                                 <a href="{% url 'register' %}">Register here</a>
                             </small>
-                            </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
-                </form>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <section id="aboutme">
     <div class="aboutme">
@@ -492,11 +516,11 @@ color: #888;
         <p>If I didn’t answer your question above or you’d like to email me about something else (even just to say hi!), then you can contact me here: 
           <a href="mailto:mnaja7742@gmail.com">mnaja7742@gmail.com</a>.
         </p>
-        <p>My email manager wizards will respond within 24-48 hours. They’ll follow up with me, Melyssa, if needed. Thank you!</p>
+        <p>My email manager wizards will respond within 24-48 hours. They’ll follow up with me, Naja, if needed. Thank you!</p>
         <div class="social-share">
-          <a href="#" class="twitter">Twitter</a>
-          <a href="#" class="facebook">Facebook</a>
-          <a href="#" class="pinterest">Pinterest</a>
+          <a href="https://x.com/Euroni_" class="twitter">Twitter</a>
+          <a href="https://www.facebook.com/dauntl" class="facebook">Facebook</a>
+          <a href="https://www.instagram.com/mnaja72/" class="pinterest">Instagram</a>
         </div>
       </div>
     </div>
@@ -520,14 +544,18 @@ color: #888;
     }
 
     // Agar modal tetap terbuka jika ada pesan error
-    document.addEventListener('DOMContentLoaded', () => {
-        const hasMessages = document.querySelectorAll('#messages').length > 0;
-        if (hasMessages) {
-            const modal = new bootstrap.Modal(document.getElementById('loginModal'));
-            modal.show();
+    document.addEventListener('DOMContentLoaded', function () {
+        const messages = document.getElementById('messages');
+        if (messages) {
+            const loginError = Array.from(messages.querySelectorAll('.alert-danger'));
+            if (loginError.length > 0) {
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
+            }
         }
     });
     </script>
+
     <script>
         const passwordInput = document.getElementById('password');
         const togglePasswordButton = document.getElementById('togglePassword');
@@ -536,6 +564,16 @@ color: #888;
             const isPasswordVisible = passwordInput.type === 'password';
             passwordInput.type = isPasswordVisible ? 'text' : 'password';
             this.innerHTML = isPasswordVisible ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            const toastList = toastElList.map(function (toastEl) {
+                return new bootstrap.Toast(toastEl, { delay: 2000 });
+            });
+            toastList.forEach(toast => toast.show());
         });
     </script>
 

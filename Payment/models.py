@@ -25,7 +25,7 @@ class Payment(models.Model):
         ,default='completed'
     )
     transaction_id = models.CharField(max_length=100, blank=True, null=True)
-    proof_of_payment = models.ImageField(upload_to='payment_proofs/', blank=True, null=True)
+    proof_of_payment = models.ImageField(upload_to='static/images/payment_proofs/', blank=True, null=True)
 
     def __str__(self):
         return f"Payment {self.id} - {self.amount} ({self.get_status_display()})"

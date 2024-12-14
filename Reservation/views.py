@@ -54,8 +54,8 @@ def cancel_reservation(request, pk):
 @login_required
 def reservation_list_hotel(request):
     form = ReservationListForm(request.GET or None)
-    reservations = Reservation.objects.filter(user=request.user)  # Hanya milik user login
-    
+    reservations = Reservation.objects.all()
+
     if form.is_valid():
         room = form.cleaned_data.get('room')
         status = form.cleaned_data.get('status')

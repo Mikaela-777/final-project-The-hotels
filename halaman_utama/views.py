@@ -41,10 +41,11 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
+            messages.success(request, f"Welcome back, {user.username}!")
             return redirect('home')
         else:
-            messages.info(request, 'Username or password incorrect')
-
+            messages.error(request, 'Username or password incorrect', extra_tags='login_error')
+            
     context = {}
     return render(request, 'home.html', context)
 
@@ -77,13 +78,11 @@ def profile_view(request):
     }
     return render(request, 'accounts/profile.html', context)
 
-
+@login_required
 def edit_user_profile(request):
     try:
-        # Coba ambil profil yang sudah ada
         profile = UserProfile.objects.get(user=request.user)
     except UserProfile.DoesNotExist:
-        # Jika tidak ada, buat objek UserProfile baru untuk user yang sedang login
         profile = UserProfile(user=request.user)
 
     # Proses form

@@ -59,14 +59,10 @@ a:hover {
 }
 
 </style>
+{% if user.is_staff %}
 <body>        
-    <a href="{% url 'home' %}">Back</a>        
+    <a href="{% url 'payment_list' %}">Back</a>        
     <h1>Riwayat Pembayaran</h1>
-    {% if user.is_staff %}
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="{% url 'payment_list_all' %}" style="display: inline-block; color: #fff; background-color: #007bff; padding: 10px 15px; text-decoration: none; border-radius: 5px;">All Payment</a>
-    </div>
-    {% endif %}
     <table border="1">
         <thead>
             <tr>
@@ -76,6 +72,7 @@ a:hover {
                 <th>Payment Date</th>
                 <th>Method</th>
                 <th>Status</th>
+                <th>Proof Of Payment</th>
             </tr>
         </thead>
         <tbody>
@@ -86,10 +83,23 @@ a:hover {
                 <td>${{ payment.amount }}</td>
                 <td>{{ payment.payment_date }}</td>
                 <td>{{ payment.get_payment_method_display }}</td>
-                <td>{{ payment.get_status_display }}</td>          
+                <td>{{ payment.get_status_display }}</td> 
+                <td>
+                    {% if payment.proof_of_payment %}
+                        <a href="{{ payment.proof_of_payment.url }}" target="_blank">Lihat Bukti Pembayaran</a>
+                    {% else %}
+                        No Proof Uploaded
+                    {% endif %}
+                </td>         
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
+{% endif %}
+
+{% if not user.is_staff %}
+<h1> Ngapain bang</h1>
+{% endif %}
+
 </html>

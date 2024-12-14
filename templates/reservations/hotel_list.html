@@ -1,4 +1,6 @@
+{% if user.is_staff %}
 {% block content %}
+<a href="{% url 'reservation_list' %}" style="padding-left: 10px;">Kembali Ke Reservasi</a>
 <h1 class="text-center">Hotel Reservation List</h1>
 
 <form method="get" class="filter-form">
@@ -120,3 +122,7 @@
         background-color: #0056b3;
     }
 </style>
+{% endif %}
+{% if not user.is_staff %}
+<h1> Ngapain bang</h1>
+{% endif %}
