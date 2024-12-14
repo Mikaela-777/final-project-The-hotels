@@ -83,7 +83,7 @@
             color: #333;
             font-size: 0.9rem;
             display: none;
-            text-align: left;
+            text-align: center;
         }
 
         @media (max-width: 1024px) {
@@ -154,7 +154,9 @@
                 <p>Harga per malam: ${{ single_room_price }}</p>
                 <button class="btn" onclick="toggleDescription('single-room-desc')">Deskripsi</button>
                 <div id="single-room-desc" class="description">
-                    Single Room: Kamar nyaman untuk satu orang dengan fasilitas modern dan tempat tidur tunggal.
+                    Nikmati kenyamanan kamar single dengan tempat tidur empuk dan Wi-Fi gratis, 
+                    ideal untuk Anda yang bepergian solo. Kamar mandi pribadi memberikan kenyamanan ekstra 
+                    selama menginap.
                 </div>
                 <a href="{% url 'create_reservation' %}" class="btn">Pesan</a>
             </div>
@@ -167,7 +169,8 @@
                 <p>Harga per malam: ${{ double_room_price }}</p>
                 <button class="btn" onclick="toggleDescription('double-room-desc')">Deskripsi</button>
                 <div id="double-room-desc" class="description">
-                    Double Room: Ideal untuk dua orang dengan tempat tidur ganda dan ruang yang lebih luas.
+                    Kamar double kami menawarkan tempat tidur ganda yang luas, Wi-Fi gratis, dan TV layar datar. 
+                    Kamar mandi pribadi yang modern menambah kenyamanan, cocok untuk perjalanan bersama pasangan atau teman.
                 </div>
                 <a href="{% url 'create_reservation' %}" class="btn">Pesan</a>
             </div>
@@ -180,7 +183,10 @@
                 <p>Harga per malam: ${{ suite_room_price }}</p>
                 <button class="btn" onclick="toggleDescription('suite-room-desc')">Deskripsi</button>
                 <div id="suite-room-desc" class="description">
-                    Suite Room: Pilihan mewah dengan ruang tamu terpisah, fasilitas premium, dan pemandangan luar biasa.
+                    Rasakan kemewahan kamar suite hotel kami, dengan ruang yang luas, tempat tidur king-size, 
+                    dan area lounge yang nyaman. Dilengkapi dengan fasilitas premium seperti Wi-Fi gratis, 
+                    TV layar datar, serta minibar. Kamar mandi pribadi dengan bathtub dan perlengkapan mandi mewah 
+                    memastikan kenyamanan maksimal. Ideal untuk Anda yang menginginkan pengalaman menginap yang lebih istimewa dan mewah.
                 </div>
                 <a href="{% url 'create_reservation' %}" class="btn">Pesan</a>
             </div>
