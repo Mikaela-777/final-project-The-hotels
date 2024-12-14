@@ -22,7 +22,6 @@ urlpatterns = [
     path('',include('halaman_utama.urls')),
     path('rooms',include('rooms.urls')),
     path('Reservation',include('Reservation.urls')),
-    path('Payment',include('Payment.urls'))
-
-
+    path('Payment',include('Payment.urls')),
+    path('feedback',include('feedback.urls')),
 ]

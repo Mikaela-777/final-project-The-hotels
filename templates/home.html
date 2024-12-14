@@ -178,6 +178,10 @@ background-color: #4267B2;
 background-color: #E60023;
 }
 
+.social-share .feedback {
+background-color:green;
+}
+
 .social-share a:hover {
 transform: translateY(-5px);
 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -272,9 +276,6 @@ color: #888;
     color: #9f9f9f; /* Warna ikon */
 }
 
-
-
-  
   /* Tablet */
   @media (max-width: 758px) {
     html {
@@ -525,6 +526,10 @@ color: #888;
       </div>
     </div>
 </section>
+
+<div class="social-share">
+    <a href="{% url 'submit_feedback' %}" class="feedback">Give Feedback</a>
+</div>
     <footer>
         <p>&copy; 2024 Sapphire Seas Hotel. All rights reserved.</p>
     </footer>

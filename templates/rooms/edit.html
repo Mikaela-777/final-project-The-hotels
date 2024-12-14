@@ -1,3 +1,4 @@
+{% if user.is_staff %}
 <h1>Edit Room: {{ room.room_number }}</h1>
 <form method="POST">
     {% csrf_token %}
@@ -5,3 +6,7 @@
     <button type="submit" class="btn btn-success">Simpan Perubahan</button>
 </form>
 <a href="{% url 'room_list' %}" class="btn btn-secondary">Kembali</a>
+{% endif %}
+{% if not user.is_staff %}
+<h1> Ngapain bang</h1>
+{% endif %}

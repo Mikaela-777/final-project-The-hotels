@@ -1,3 +1,4 @@
+{% if user.is_staff %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,3 +91,7 @@
     </div>
 </body>
 </html>
+{% endif %}
+{% if not user.is_staff %}
+<h1> Ngapain bang</h1>
+{% endif %}

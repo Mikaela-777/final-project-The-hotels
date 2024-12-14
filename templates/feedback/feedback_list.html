@@ -1,0 +1,46 @@
+{% load static %}
+{% if user.is_staff %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Feedback</title>
+    <!-- Muat CSS -->
+    <link rel="stylesheet" href="{% static 'css/feedback.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h2>Daftar Feedback</h2>
+        
+        {% if feedbacks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama User</th>
+                    <th>Pesan</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for feedback in feedbacks %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ feedback.user.username }}</td>
+                    <td>{{ feedback.message }}</td>
+                    <td>{{ feedback.created_at|date:"d M Y, H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-message">Tidak ada feedback yang tersedia.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endif %}
+{% if not user.is_staff %}
+<h1> Ngapain bang</h1>
+{% endif %}
