@@ -10,8 +10,7 @@ class Payment(models.Model):
         max_length=50,
         choices=[
             ('cash', 'Cash'),
-            ('credit_card', 'Credit Card'),
-            ('bank_transfer', 'Bank Transfer'),
+            ('Gopay', 'Gopay'),
             ('QRIS', 'QRIS'),
             ('Dana', 'Dana'),
         ]

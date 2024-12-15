@@ -47,10 +47,23 @@
                     <div class="mb-3">
                         <label for="id_payment_method" class="form-label fw-bold">Metode Pembayaran</label>
                         {{ form.payment_method }}
+                        
+                        <!-- QRIS Container -->
                         <div id="qris-container" class="mt-3 text-center" style="display: none;">
                             <img src="{% static 'images/qris.jpeg' %}" alt="QRIS Code" style="width: 200px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0,0,0,0.1);">
                             <p class="mt-2 text-muted">Silakan scan QRIS untuk melakukan pembayaran.</p>
                         </div>
+
+                        <!-- Dana Container -->
+                        <div id="dana-container" class="mt-3 text-center" style="display: none;">
+                            <p class="text-muted" style="font-size: 1.25rem;">Bayar Ke Nomor Dana Ini: <strong>082353879797</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- Gopay Container -->
+                    <div id="gopay-container" class="mt-3 text-center" style="display: none;">
+                        <img src="{% static 'images/gopay.png' %}" alt="QRIS Gopay Code" style="width: 200px; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0,0,0,0.1);">
+                        <p class="mt-2 text-muted">Silakan scan QRIS Gopay untuk melakukan pembayaran.</p>
                     </div>
 
                     <!-- Payment Status (Auto-filled with "Completed") -->
@@ -60,7 +73,7 @@
                     </div>
 
                     <!-- Proof of Payment (Image Upload) -->
-                    <div class="mb-3">
+                    <div class="mb-3" id="proof-of-payment-container">
                         <label for="id_proof_of_payment" class="form-label fw-bold">Bukti Pembayaran</label>
                         {{ form.proof_of_payment }}
                     </div>
@@ -79,17 +92,45 @@
         document.addEventListener("DOMContentLoaded", function() {
             const paymentMethodField = document.getElementById("id_payment_method");
             const qrisContainer = document.getElementById("qris-container");
-    
+            const danaContainer = document.getElementById("dana-container");
+            const proofOfPaymentContainer = document.getElementById("proof-of-payment-container");
+            const gopayContainer = document.getElementById("gopay-container");
+
             // Event listener ketika metode pembayaran dipilih
             paymentMethodField.addEventListener("change", function() {
+                console.log("Metode pembayaran dipilih:", paymentMethodField.value); // Debugging
+
                 if (paymentMethodField.value === "QRIS") {
-                    qrisContainer.style.display = "block"; // Tampilkan gambar QRIS
+                    qrisContainer.style.display = "block";
+                    danaContainer.style.display = "none";
+                    gopayContainer.style.display = "none";
+                    proofOfPaymentContainer.style.display = "block";
+                } else if (paymentMethodField.value === "Dana") {
+                    danaContainer.style.display = "block";
+                    qrisContainer.style.display = "none";
+                    gopayContainer.style.display = "none";
+                    proofOfPaymentContainer.style.display = "block";
+                } else if (paymentMethodField.value === "Gopay") {
+                    gopayContainer.style.display = "block";
+                    qrisContainer.style.display = "none";
+                    danaContainer.style.display = "none";
+                    proofOfPaymentContainer.style.display = "block";
+                } else if (paymentMethodField.value === "Cash") {
+                    proofOfPaymentContainer.style.display = "none";
+                    qrisContainer.style.display = "none";
+                    danaContainer.style.display = "none";
+                    gopayContainer.style.display = "none";
                 } else {
-                    qrisContainer.style.display = "none"; // Sembunyikan gambar jika bukan QRIS
+                    qrisContainer.style.display = "none";
+                    danaContainer.style.display = "none";
+                    gopayContainer.style.display = "none";
+                    proofOfPaymentContainer.style.display = "block";
                 }
             });
+
+            // Trigger initial state
+            paymentMethodField.dispatchEvent(new Event("change"));
         });
     </script>
-    
 </body>
 </html>
