@@ -29,14 +29,6 @@ def reservation_list(request):
     reservations = Reservation.objects.filter(user=request.user).order_by('-check_in')
     return render(request, 'reservations/list.html', {'reservations': reservations})
 
-# Delete
-def delete_reservation(request, pk):
-    reservation = get_object_or_404(Reservation, pk=pk)
-    if request.method == "POST":
-        reservation.delete()
-        return redirect('reservation_list')
-    return render(request, 'reservations/delete.html', {'reservation': reservation})
-
 def cancel_reservation(request, pk):
     reservation = get_object_or_404(Reservation, pk=pk)
 

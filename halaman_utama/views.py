@@ -1,5 +1,4 @@
-from django.shortcuts import render,HttpResponse, redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
 from halaman_utama.forms import CreateUserForm
 import logging
 from .forms import UserProfileForm
