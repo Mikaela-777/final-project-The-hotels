@@ -24,7 +24,7 @@ def edit_room(request, pk):
         form = RoomForm(request.POST, instance=room)
         if form.is_valid():
             form.save()
-            return redirect('room_list')
+            return redirect('setting_room')
     else:
         form = RoomForm(instance=room)
         

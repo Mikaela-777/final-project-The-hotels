@@ -3,10 +3,22 @@
 <a href="{% url 'reservation_list' %}" style="padding-left: 10px;">Kembali Ke Reservasi</a>
 <h1 class="text-center">Hotel Reservation List</h1>
 
-<form method="get" class="filter-form">
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Filter</button>
+<form method="get" class="form-inline" style="text-align: center;">
+    <div class="form-group" style="margin-top: 5px;">
+        {{ form.user.label_tag }}
+        {{ form.user }}
+    </div>
+    <div class="form-group" style="margin-top: 5px;">
+        {{ form.room.label_tag }}
+        {{ form.room }}
+    </div>
+    <div class="form-group" style="margin-top: 5px;">
+        {{ form.status.label_tag }}
+        {{ form.status }}
+    </div>
+    <button type="submit" class="btn btn-primary" style="margin-top: 5px;">Search</button>
 </form>
+
 
 <table class="table table-striped mt-4">
     <thead>

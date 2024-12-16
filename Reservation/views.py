@@ -42,21 +42,25 @@ def cancel_reservation(request, pk):
     # Jika tidak memerlukan konfirmasi, bisa langsung handle POST di daftar reservasi
     return redirect('reservation_list')
 
-
 @login_required
 def reservation_list_hotel(request):
     form = ReservationListForm(request.GET or None)
     reservations = Reservation.objects.all()
 
     if form.is_valid():
+        # Ambil data dari form
+        user = form.cleaned_data.get('user')  # Username (string) dari form
         room = form.cleaned_data.get('room')
         status = form.cleaned_data.get('status')
 
+        # Terapkan filter berdasarkan input pengguna
+        if user:
+            reservations = reservations.filter(user__username__icontains=user)
         if room:
             reservations = reservations.filter(room__room_number__icontains=room)
         if status:
             reservations = reservations.filter(status=status)
-    
+
     context = {
         'form': form,
         'reservations': reservations,
